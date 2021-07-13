@@ -1,0 +1,7 @@
+<launch>
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" 
+	    args="0 0 0 0 0 0 /base_link /scan 100" />
+  <include file="$(find depthimage_to_laserscan)/launch/depthimage_to_laserscan.launch"/> 
+  <include file="$(find rikirobot)/param/navigation/xtion_gmapping.xml"/> 
+  <!--include file="$(find rikirobot)/param/navigation/move_base.xml" /-->
+</launch>

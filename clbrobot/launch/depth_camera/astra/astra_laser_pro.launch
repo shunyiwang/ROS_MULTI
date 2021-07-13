@@ -1,0 +1,61 @@
+<launch>
+  <!-- "camera" should uniquely identify the device. All topics are pushed down
+       into the "camera" namespace, and it is prepended to tf frame ids. -->
+  <arg name="camera"      default="camera"/>
+  <arg name="publish_tf"  default="true"/>
+ 
+  <!-- Factory-calibrated depth registration -->
+  <arg name="depth_registration"              default="false"/>
+  <arg     if="$(arg depth_registration)" name="depth" value="depth_registered" />
+  <arg unless="$(arg depth_registration)" name="depth" value="depth" />
+ 
+  <!-- Processing Modules -->
+  <arg name="rgb_processing"                  default="false"/>
+  <arg name="ir_processing"                   default="true"/>
+  <arg name="depth_processing"                default="true"/>
+  <arg name="depth_registered_processing"     default="false"/>
+  <arg name="disparity_processing"            default="true"/>
+  <arg name="disparity_registered_processing" default="true"/>
+  <arg name="scan_processing"                 default="true"/>
+ 
+  <!-- Worker threads for the nodelet manager -->
+  <arg name="num_worker_threads" default="4" />
+ 
+  <!-- Laserscan topic -->
+  <arg name="scan_topic" default="scan"/>
+ 
+   <!--                        Laserscan 
+     This uses lazy subscribing, so will not activate until scan is requested.
+   -->
+  <group if="$(arg scan_processing)">
+    <node pkg="nodelet" type="nodelet" name="depthimage_to_laserscan" args="load depthimage_to_laserscan/DepthImageToLaserScanNodelet $(arg camera)/$(arg camera)_nodelet_manager">
+      <!-- Pixel rows to use to generate the laserscan. For each column, the scan will
+           return the minimum value for those pixels centered vertically in the image. -->
+      <param name="scan_height" value="10"/>
+      <param name="output_frame_id" value="/$(arg camera)_depth_frame"/>
+      <param name="range_min" value="0.45"/>
+      <remap from="image" to="$(arg camera)/$(arg depth)/image_raw"/>
+      <remap from="scan" to="$(arg scan_topic)"/>
+ 
+      <remap from="$(arg camera)/image" to="$(arg camera)/$(arg depth)/image_raw"/>
+      <remap from="$(arg camera)/scan" to="$(arg scan_topic)"/>
+    </node>
+    
+  </group>
+  <node name="uvc_camera_node" pkg="uvc_camera" type="uvc_camera_node" output="screen">
+  	<remap from="/image_raw" to="/camera/rgb/image_raw" />
+  	<remap from="/camera_info" to="/camera/rgb/camera_info" />
+	<param name="width" type="int" value="640" />
+	<param name="height" type="int" value="480" />
+	<param name="fps" type="int" value="30" />
+	<param name="frame" type="string" value="wide_stereo" />
+
+	<param name="auto_focus" type="bool" value="False" />
+	<param name="focus_absolute" type="int" value="0" />
+	<!-- other supported params: auto_exposure, exposure_absolute, brightness, power_line_frequency --> 
+
+	<param name="device" type="string" value="/dev/video0" />
+	<param name="camera_info_url" type="string" value="file://$(find uvc_camera)/example.yaml" />
+
+	</node>
+</launch>

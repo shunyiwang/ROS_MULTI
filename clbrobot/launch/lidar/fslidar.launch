@@ -1,0 +1,21 @@
+<!--
+  Author: jtxiong@wizrobo.com
+  Copyright (c) 2015-2016, LinkMiao Robotics Co., Ltd.
+  All rights reserved.
+  Update: 2017-01-06
+-->
+<launch>
+<arg name="scan_topic" default="/scan"/>
+<arg name="lidar_ethernet_ip" default=" "/>
+<arg name="lidar_serial_port_id" default="/dev/ttyUSB0" />
+
+  <node pkg="wr_fslidar"  type="fslidar_node" name="fslidar_node" output="screen">
+    <param name="dev_path"         type="string" value="$(arg lidar_serial_port_id)"/>
+    <param name="inverted"            type="bool"   value="false"/>
+    <param name="frame_id"            type="string" value="/lidar_frame"/>
+    <param name="sample_rate"         type="int"    value="5000"/>
+    <param name="rotational_speed"    type="int"    value="5"/>
+    <param name="scan_topic"            type="string"   value="$(arg scan_topic)"/>
+  </node>
+  <node pkg="tf" type="static_transform_publisher" name="base_link_to_laser" args="0.04 0 0.18 0 0 0  /base_link /lidar_frame  100"/>
+</launch>

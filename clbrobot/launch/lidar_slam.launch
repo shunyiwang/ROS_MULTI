@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find clbrobot)/launch/lidar/$(env RIKILIDAR).launch" />
+  <include file="$(find clbrobot)/param/navigation/slam_gmapping.xml" />
+  <include file="$(find clbrobot)/param/navigation/move_base.xml" />
+</launch>
