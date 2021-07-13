@@ -1,0 +1,9 @@
+<launch>
+<arg name="robot_name"  default=""/>
+<group ns="$(arg robot_name)" >
+
+  <node pkg="turtlebot3_teleop" type="turtlebot3_teleop_key" name="turtlebot3_teleop_keyboard"  output="screen">
+  </node>
+
+</group>
+</launch>

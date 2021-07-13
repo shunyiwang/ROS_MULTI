@@ -1,0 +1,12 @@
+<launch>
+  <arg name="robot_name" default=""/>
+  <include file="$(find robot_model)/description.launch.xml">
+      <arg name="multi_robot_name" value="$(arg robot_name)"/>
+  </include>
+<!--
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" value="$(arg robot_name)"/>
+  </node>
+-->
+</launch>

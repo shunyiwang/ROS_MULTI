@@ -1,0 +1,6 @@
+<launch>
+  <!-- rotation_180 -->
+  <group ns="$(arg robot_name)">
+  <node name="GoForward" pkg="control" type="goRound.py" output="screen"/>
+  </group>
+</launch>

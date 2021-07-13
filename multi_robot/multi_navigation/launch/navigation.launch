@@ -1,0 +1,67 @@
+<launch>
+  <!-- Map server -->
+  <arg name="map_file" default="/home/tan/catkin_ws/src/multi_robot/map/multi_map1.yaml"/>
+  <include file="$(find multi_navigation)/launch/navigation_multi_map.launch">   
+     <arg name="map_file" value="$(arg map_file)"/>
+  </include>
+
+  <!-- Navigation -->
+
+  <arg name="robot1_name" default="robot1" />
+  <arg name="robot1_x_pos" default="9.0746421814"/>
+  <arg name="robot1_y_pos" default="9.94549751282"/>
+  <arg name="robot1_a_pos" default="1.6"/>
+
+  <arg name="robot2_name" default="robot2" />
+  <arg name="robot2_x_pos" default="11.2407026291"/>
+  <arg name="robot2_y_pos" default="9.89167976379"/>
+  <arg name="robot2_a_pos" default="1.6"/>
+
+  <arg name="robot3_name" default="robot3" />
+  <arg name="robot3_x_pos" default="13.3221769333"/>
+  <arg name="robot3_y_pos" default="10.47048091888"/>
+  <arg name="robot3_a_pos" default="1.6"/>
+
+  <arg name="robot4_name" default="robot4" />
+  <arg name="robot4_x_pos" default="13.3221769333"/>
+  <arg name="robot4_y_pos" default="9.97048091888"/>
+  <arg name="robot4_a_pos" default="1.6"/>
+
+  <include file="$(find multi_navigation)/launch/navigation_multirobot.launch">   
+     <arg name="robot_name" value="$(arg robot1_name)"/>
+     <arg name="robot_x_pos" value="$(arg robot1_x_pos)"/>     
+     <arg name="robot_y_pos" value="$(arg robot1_y_pos)"/> 
+     <arg name="robot_a_pos" value="$(arg robot1_a_pos)"/> 
+  </include>
+	
+
+  <include file="$(find multi_navigation)/launch/navigation_multirobot.launch">   
+     <arg name="robot_name" value="$(arg robot2_name)"/>
+     <arg name="robot_x_pos" value="$(arg robot2_x_pos)"/>     
+     <arg name="robot_y_pos" value="$(arg robot2_y_pos)"/> 
+     <arg name="robot_a_pos" value="$(arg robot2_a_pos)"/> 
+  </include>
+
+  <include file="$(find multi_navigation)/launch/navigation_multirobot.launch">   
+     <arg name="robot_name" value="$(arg robot3_name)"/>
+     <arg name="robot_x_pos" value="$(arg robot3_x_pos)"/>     
+     <arg name="robot_y_pos" value="$(arg robot3_y_pos)"/> 
+     <arg name="robot_a_pos" value="$(arg robot3_a_pos)"/> 
+  </include>
+
+  <include file="$(find multi_navigation)/launch/navigation_multirobot.launch">   
+     <arg name="robot_name" value="$(arg robot4_name)"/>
+     <arg name="robot_x_pos" value="$(arg robot4_x_pos)"/>     
+     <arg name="robot_y_pos" value="$(arg robot4_y_pos)"/> 
+     <arg name="robot_a_pos" value="$(arg robot4_a_pos)"/> 
+  </include>
+
+  <!-- Rviz -->
+  <include file="$(find multi_navigation)/launch/navigation_rviz.launch">   
+  </include>
+  
+  <!-- goal_reached_and_location_listener -->
+  <node name="goal_reached_and_location_listener" pkg="control" type="goal_reached_and_location_listener.py" output="screen"/>
+  
+
+</launch>

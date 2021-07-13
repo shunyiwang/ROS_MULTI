@@ -1,0 +1,29 @@
+底盘+雷达
+roslaunch clbrobot robot.launch robot_name:="robot1"
+
+slam
+roslaunch multi_slam multi_slam.launch robot_name:="robot1" robot_y_pos:="10.0" slam_methods:=gmapping
+
+多机建图
+roslaunch multi_slam map_merge.launch
+
+键盘控制
+roslaunch multi_slam keyboard.launch robot_name:="robot1"
+
+保存地图
+rosrun map_server map_saver -f /home/catkin_ws/src/multi_robot/map
+$ vim /home/catkin_ws/src/multi_robot/map/map.yaml
+## 将原来的origin参数，修改为：
+origin: [0.000000, 0.000000, 0.000000]
+
+启动地图
+roslaunch multi_navigation navigation_multi_map.launch map_file:=$HOME/tan/catkin_ws/src/multi_robot/map/map.yaml
+
+导航
+roslaunch multi_navigation navigation_multirobot.launch robot_name:="robot1"
+
+rviz
+roslaunch multi_navigation navigation_rviz.launch
+
+发布目标位置
+rostopic pub /robot1/move_base_simple/goal geometry_msgs/PoseStamped '{header: {stamp: now, frame_id: "map"}, pose: {position: {x: 0.5, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}'

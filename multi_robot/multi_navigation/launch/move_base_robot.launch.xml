@@ -1,0 +1,32 @@
+<launch>
+  <arg name="odom_frame_id"   default="odom"/>
+  <arg name="base_frame_id"   default="base_footprint"/>
+  <arg name="global_frame_id" default="/map"/>
+  <arg name="odom_topic" default="odom" />
+  <arg name="laser_topic" default="scan" />
+  <arg name="cmd_topic" default="cmd_vel" />
+  <arg name="custom_param_file" default="$(find multi_navigation)/param/dummy.yaml"/>
+
+  <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+    <rosparam file="$(find multi_navigation)/param/tank/costmap_common_params.yaml" command="load" ns="global_costmap" />
+    <rosparam file="$(find multi_navigation)/param/tank/costmap_common_params.yaml" command="load" ns="local_costmap" />   
+    <rosparam file="$(find multi_navigation)/param/tank/local_costmap_params.yaml" command="load" />   
+    <rosparam file="$(find multi_navigation)/param/tank/global_costmap_params.yaml" command="load" />
+    <rosparam file="$(find multi_navigation)/param/tank/move_base_params.yaml" command="load" />
+    <rosparam file="$(find multi_navigation)/param/tank/base_local_planner_params.yaml" command="load" />
+    <!-- external params file that could be loaded into the move_base namespace -->
+    <rosparam file="$(arg custom_param_file)" command="load" />
+    
+    <!-- reset frame_id parameters using user input data -->
+    <param name="global_costmap/global_frame" value="$(arg global_frame_id)"/>
+    <param name="global_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
+    <param name="local_costmap/global_frame" value="$(arg global_frame_id)"/>
+    <param name="local_costmap/robot_base_frame" value="$(arg base_frame_id)"/>
+    <param name="global_costmap/obstacle_layer/scan/topic" value="$(arg laser_topic)"/>
+    <param name="local_costmap/obstacle_layer/scan/topic" value="$(arg laser_topic)"/>
+    <remap from="cmd_vel" to="$(arg cmd_topic)"/>
+    <remap from="odom" to="$(arg odom_topic)"/>
+    <remap from="scan" to="$(arg laser_topic)"/>
+  </node>
+
+</launch>

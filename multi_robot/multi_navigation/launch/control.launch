@@ -1,0 +1,9 @@
+<launch>
+  <!-- control -->
+  <node name="video_talker_robot1" pkg="control" type="control1.py" output="screen"/>
+  <node name="video_talker_robot2" pkg="control" type="control2.py" output="screen"/>
+
+  <node name="video_talker_robot3" pkg="control" type="control3.py" output="screen"/>
+  <node name="video_talker_robot4" pkg="control" type="control4.py" output="screen"/>
+
+</launch>
