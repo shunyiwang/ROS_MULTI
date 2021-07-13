@@ -27,3 +27,13 @@ roslaunch multi_navigation navigation_rviz.launch
 
 发布目标位置
 rostopic pub /robot1/move_base_simple/goal geometry_msgs/PoseStamped '{header: {stamp: now, frame_id: "map"}, pose: {position: {x: 0.5, y: 0.0, z: 0.0}, orientation: {w: 1.0}}}'
+
+开启多机导航
+roslaunch multi_navigation navigation.launch
+
+开启控制程序
+roslaunch multi_navigation control.launch
+
+开启用户界面
+/Interface
+python main.py
