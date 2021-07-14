@@ -3,7 +3,7 @@ ros多机建图+导航
 
 涉及到ros小车的建图和导航功能
 
-常用命令可见 multi_command
+常用命令可见 command_multi
 
 multi_robot: 上位机程序，主要包括多机建图和导航的launch文件和param文件
 
